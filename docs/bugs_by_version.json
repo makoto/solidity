@@ -1,6 +1,7 @@
 {
     "0.1.0": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -18,6 +19,7 @@
     }, 
     "0.1.1": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -35,6 +37,7 @@
     }, 
     "0.1.2": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -52,6 +55,7 @@
     }, 
     "0.1.3": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -69,6 +73,7 @@
     }, 
     "0.1.4": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -86,6 +91,7 @@
     }, 
     "0.1.5": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -103,6 +109,7 @@
     }, 
     "0.1.6": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -121,6 +128,7 @@
     }, 
     "0.1.7": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -139,6 +147,7 @@
     }, 
     "0.2.0": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -157,6 +166,7 @@
     }, 
     "0.2.1": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -175,6 +185,7 @@
     }, 
     "0.2.2": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "ECRecoverMalformedInput", 
             "SkipEmptyStringLiteral", 
@@ -193,6 +204,7 @@
     }, 
     "0.3.0": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -211,6 +223,7 @@
     }, 
     "0.3.1": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -228,6 +241,7 @@
     }, 
     "0.3.2": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -245,6 +259,7 @@
     }, 
     "0.3.3": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -261,6 +276,7 @@
     }, 
     "0.3.4": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -277,6 +293,7 @@
     }, 
     "0.3.5": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -293,6 +310,7 @@
     }, 
     "0.3.6": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -307,6 +325,7 @@
     }, 
     "0.4.0": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -321,6 +340,7 @@
     }, 
     "0.4.1": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -335,6 +355,7 @@
     }, 
     "0.4.10": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -345,6 +366,7 @@
     }, 
     "0.4.11": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -354,6 +376,7 @@
     }, 
     "0.4.12": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput"
@@ -362,6 +385,7 @@
     }, 
     "0.4.13": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput"
@@ -370,6 +394,7 @@
     }, 
     "0.4.14": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue"
         ], 
@@ -377,24 +402,29 @@
     }, 
     "0.4.15": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector"
         ], 
         "released": "2017-08-08"
     }, 
     "0.4.16": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector"
         ], 
         "released": "2017-08-24"
     }, 
     "0.4.17": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector"
         ], 
         "released": "2017-09-21"
     }, 
     "0.4.18": {
-        "bugs": [], 
+        "bugs": [
+            "LibrariesCallableDirectly"
+        ], 
         "released": "2017-10-18"
     }, 
     "0.4.19": {
@@ -403,6 +433,7 @@
     }, 
     "0.4.2": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -416,6 +447,7 @@
     }, 
     "0.4.3": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -428,6 +460,7 @@
     }, 
     "0.4.4": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -439,6 +472,7 @@
     }, 
     "0.4.5": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -451,6 +485,7 @@
     }, 
     "0.4.6": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -462,6 +497,7 @@
     }, 
     "0.4.7": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -472,6 +508,7 @@
     }, 
     "0.4.8": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 
@@ -482,6 +519,7 @@
     }, 
     "0.4.9": {
         "bugs": [
+            "LibrariesCallableDirectly", 
             "ZeroFunctionSelector", 
             "DelegateCallReturnValue", 
             "ECRecoverMalformedInput", 

@@ -64,6 +64,10 @@ void ContractCompiler::compileContract(
 )
 {
 	CompilerContext::LocationSetter locationSetter(m_context, _contract);
+	if (_contract.isLibrary())
+		// This has to be the very first thing in the bytecode, because it will be
+		// modified at deploy time.
+		appendCallPreventer(_contract);
 	initializeContext(_contract, _contracts);
 	appendFunctionSelector(_contract);
 	appendMissingFunctions();
@@ -75,8 +79,13 @@ size_t ContractCompiler::compileConstructor(
 )
 {
 	CompilerContext::LocationSetter locationSetter(m_context, _contract);
-	initializeContext(_contract, _contracts);
-	return packIntoContractCreator(_contract);
+	if (_contract.isLibrary())
+		return deployLibrary(_contract);
+	else
+	{
+		initializeContext(_contract, _contracts);
+		return packIntoContractCreator(_contract);
+	}
 }
 
 size_t ContractCompiler::compileClone(
@@ -122,6 +131,7 @@ void ContractCompiler::appendCallValueCheck()
 
 void ContractCompiler::appendInitAndConstructorCode(ContractDefinition const& _contract)
 {
+	solAssert(!_contract.isLibrary(), "Tried to initialize library.");
 	CompilerContext::LocationSetter locationSetter(m_context, _contract);
 	// Determine the arguments that are used for the base constructors.
 	std::vector<ContractDefinition const*> const& bases = _contract.annotation().linearizedBaseContracts;
@@ -163,6 +173,7 @@ void ContractCompiler::appendInitAndConstructorCode(ContractDefinition const& _c
 size_t ContractCompiler::packIntoContractCreator(ContractDefinition const& _contract)
 {
 	solAssert(!!m_runtimeCompiler, "");
+	solAssert(!_contract.isLibrary(), "Tried to use contract creator or library.");
 
 	appendInitAndConstructorCode(_contract);
 
@@ -184,6 +195,34 @@ size_t ContractCompiler::packIntoContractCreator(ContractDefinition const& _cont
 	m_context.pushSubroutineOffset(m_context.runtimeSub());
 	m_context << u256(0) << Instruction::CODECOPY;
 	m_context << u256(0) << Instruction::RETURN;
+
+	return m_context.runtimeSub();
+}
+
+size_t ContractCompiler::deployLibrary(ContractDefinition const& _contract)
+{
+	solAssert(!!m_runtimeCompiler, "");
+	solAssert(_contract.isLibrary(), "Tried to deploy contract as library.");
+
+	CompilerContext::LocationSetter locationSetter(m_context, _contract);
+
+	solAssert(m_context.runtimeSub() != size_t(-1), "Runtime sub not registered");
+	m_context.pushSubroutineSize(m_context.runtimeSub());
+	m_context.pushSubroutineOffset(m_context.runtimeSub());
+	m_context.appendInlineAssembly(R"(
+	{
+		// If code starts at 11, an mstore(0) writes to the full PUSH20 plus data
+		// without the need for a shift.
+		let codepos := 11
+		codecopy(codepos, subOffset, subSize)
+		// Check that the first opcode is a PUSH20
+		switch eq(0x73, byte(0, mload(codepos)))
+		case 0 { invalid() }
+		mstore(0, address())
+		mstore8(codepos, 0x73)
+		return(codepos, subSize)
+	}
+	)", {"subSize", "subOffset"});
 
 	return m_context.runtimeSub();
 }
@@ -242,6 +281,16 @@ void ContractCompiler::appendConstructor(FunctionDefinition const& _constructor)
 		appendCalldataUnpacker(FunctionType(_constructor).parameterTypes(), true);
 	}
 	_constructor.accept(*this);
+}
+
+void ContractCompiler::appendCallPreventer(ContractDefinition const& _contract)
+{
+	solAssert(_contract.isLibrary(), "");
+	// Special constant that will be replaced by the address at deploy time.
+	// At compilation time, this is just "PUSH20 00...000".
+	m_context.appendDeployTimeAddress();
+	m_context << Instruction::ADDRESS << Instruction::EQ;
+	m_context.appendConditionalRevert();
 }
 
 void ContractCompiler::appendFunctionSelector(ContractDefinition const& _contract)
@@ -441,6 +490,7 @@ void ContractCompiler::registerStateVariables(ContractDefinition const& _contrac
 
 void ContractCompiler::initializeStateVariables(ContractDefinition const& _contract)
 {
+	solAssert(!_contract.isLibrary(), "Tried to initialize state variables of library.");
 	for (VariableDeclaration const* variable: _contract.stateVariables())
 		if (variable->value() && !variable->isConstant())
 			ExpressionCompiler(m_context, m_optimise).appendStateVariableInitialization(*variable);

@@ -3543,6 +3543,25 @@ BOOST_AUTO_TEST_CASE(library_call_in_homestead)
 	ABI_CHECK(callContractFunction("sender()"), encodeArgs(u160(m_sender)));
 }
 
+BOOST_AUTO_TEST_CASE(library_call_protection)
+{
+	char const* sourceCode = R"(
+		library Lib { function m() returns (address) { return msg.sender; } }
+		contract Test {
+			address public sender;
+			function f() returns (address) {
+				sender = Lib.m();
+				return sender;
+			}
+		}
+	)";
+	compileAndRun(sourceCode, 0, "Lib");
+	ABI_CHECK(callContractFunction("m()"), encodeArgs());
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, Address>{{"Lib", m_contractAddress}});
+	ABI_CHECK(callContractFunction("f()"), encodeArgs(u160(m_sender)));
+	ABI_CHECK(callContractFunction("sender()"), encodeArgs(u160(m_sender)));
+}
+
 BOOST_AUTO_TEST_CASE(store_bytes)
 {
 	// this test just checks that the copy loop does not mess up the stack

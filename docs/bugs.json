@@ -1,5 +1,12 @@
 [
     {
+        "name": "LibrariesCallableDirectly",
+        "summary": "A direct call to a library that contains a selfdestruct call can result in the library itself being destroyed in some circumstances. This in turn will cause undefined behaviour in contracts using that library.",
+        "description": "Calls to library functions from Soliidty use the delegatecall opcode, which runs the library's code in the context of the caller. If a library contains a selfdestruct functionality that is meant for the calling contract, it can be possible in some circumstances to invoke it on the library itself. This renders the library unusable and thus all contracts using the library will have undefined behaviour.",
+        "fixed": "0.4.19",
+        "severity": "medium"
+    },
+    {
         "name": "ZeroFunctionSelector",
         "summary": "It is possible to craft the name of a function such that it is executed instead of the fallback function in very specific circumstances.",
         "description": "If a function has a selector consisting only of zeros, is payable and part of a contract that does not have a fallback function and at most five external functions in total, this function is called instead of the fallback function if Ether is sent to the contract without data.",
