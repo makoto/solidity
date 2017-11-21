@@ -83,10 +83,11 @@ private:
 	void appendInitAndConstructorCode(ContractDefinition const& _contract);
 	void appendBaseConstructor(FunctionDefinition const& _constructor);
 	void appendConstructor(FunctionDefinition const& _constructor);
-	/// Appends code that prevents the library being called directly (instead of via
-	/// delegatecall or callcode). This inserts a specific push constant as the first instruction
+	/// Appends code that returns a boolean flag on the stack that tells whether
+	/// the contract has been called via delegatecall (false) or regular call (true).
+	/// This is done by inserting a specific push constant as the first instruction
 	/// whose data will be modified in memory at deploy time.
-	void appendCallPreventer(ContractDefinition const& _contract);
+	void appendDelegatecallCheck();
 	void appendFunctionSelector(ContractDefinition const& _contract);
 	void appendCallValueCheck();
 	/// Creates code that unpacks the arguments for the given function represented by a vector of TypePointers.

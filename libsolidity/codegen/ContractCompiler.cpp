@@ -64,10 +64,12 @@ void ContractCompiler::compileContract(
 )
 {
 	CompilerContext::LocationSetter locationSetter(m_context, _contract);
+
 	if (_contract.isLibrary())
-		// This has to be the very first thing in the bytecode, because it will be
-		// modified at deploy time.
-		appendCallPreventer(_contract);
+		// Check whether this is a call (true) or a delegatecall (false).
+		// This has to be the first code in the contract.
+		appendDelegatecallCheck();
+
 	initializeContext(_contract, _contracts);
 	appendFunctionSelector(_contract);
 	appendMissingFunctions();
@@ -283,20 +285,25 @@ void ContractCompiler::appendConstructor(FunctionDefinition const& _constructor)
 	_constructor.accept(*this);
 }
 
-void ContractCompiler::appendCallPreventer(ContractDefinition const& _contract)
+void ContractCompiler::appendDelegatecallCheck()
 {
-	solAssert(_contract.isLibrary(), "");
 	// Special constant that will be replaced by the address at deploy time.
 	// At compilation time, this is just "PUSH20 00...000".
 	m_context.appendDeployTimeAddress();
 	m_context << Instruction::ADDRESS << Instruction::EQ;
-	m_context.appendConditionalRevert();
+	// The result on the stack is
+	// "We have not been called via DELEGATECALL".
 }
 
 void ContractCompiler::appendFunctionSelector(ContractDefinition const& _contract)
 {
 	map<FixedHash<4>, FunctionTypePointer> interfaceFunctions = _contract.interfaceFunctions();
 	map<FixedHash<4>, const eth::AssemblyItem> callDataUnpackerEntryPoints;
+
+	if (_contract.isLibrary())
+	{
+		solAssert(m_context.stackHeight() == 1, "CALL / DELEGATECALL flag expected.");
+	}
 
 	FunctionDefinition const* fallback = _contract.fallbackFunction();
 	eth::AssemblyItem notFound = m_context.newTag();
@@ -309,7 +316,7 @@ void ContractCompiler::appendFunctionSelector(ContractDefinition const& _contrac
 	if (!interfaceFunctions.empty())
 		CompilerUtils(m_context).loadFromMemory(0, IntegerType(CompilerUtils::dataStartOffset * 8), true);
 
-	// stack now is: 1 0 <funhash>
+	// stack now is: <can-call-non-view-functions>? <funhash>
 	for (auto const& it: interfaceFunctions)
 	{
 		callDataUnpackerEntryPoints.insert(std::make_pair(it.first, m_context.newTag()));
@@ -321,6 +328,7 @@ void ContractCompiler::appendFunctionSelector(ContractDefinition const& _contrac
 	m_context << notFound;
 	if (fallback)
 	{
+		solAssert(!_contract.isLibrary(), "");
 		if (!fallback->isPayable())
 			appendCallValueCheck();
 
@@ -340,6 +348,13 @@ void ContractCompiler::appendFunctionSelector(ContractDefinition const& _contrac
 		CompilerContext::LocationSetter locationSetter(m_context, functionType->declaration());
 
 		m_context << callDataUnpackerEntryPoints.at(it.first);
+		if (_contract.isLibrary() && functionType->stateMutability() > StateMutability::View)
+		{
+			// If the function is not a view function and is called without DELEGATECALL,
+			// we revert.
+			m_context << dupInstruction(2);
+			m_context.appendConditionalRevert();
+		}
 		m_context.setStackOffset(0);
 		// We have to allow this for libraries, because value of the previous
 		// call is still visible in the delegatecall.

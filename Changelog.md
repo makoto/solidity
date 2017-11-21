@@ -27,7 +27,7 @@ Features:
  * Syntax Checker: Turn the usage of ``callcode`` into an error as experimental 0.5.0 feature.
  * Type Checker: Improve address checksum warning.
  * Type Checker: More detailed errors for invalid array lengths (such as division by zero).
- * Code Generator: Prevent libraries from being called directly.
+ * Code Generator: Prevent non-view functions in libraries from being called directly.
 
 Bugfixes:
 
