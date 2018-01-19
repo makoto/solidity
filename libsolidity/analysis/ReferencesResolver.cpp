@@ -249,6 +249,19 @@ void ReferencesResolver::endVisit(VariableDeclaration const& _variable)
 							"Location has to be calldata or storage for external "
 							"library functions (remove the \"memory\" keyword)."
 						);
+					else if (varLoc == Location::Default){
+						if (_variable.sourceUnit().annotation().experimentalFeatures.count(ExperimentalFeature::V050))
+							typeError(
+								_variable.location(),
+								"Storage location must be specified as \"storage\"."
+							);
+						else
+							m_errorReporter.warning(
+								_variable.location(),
+								"Variable is declared as a storage pointer. "
+								"Use an explicit \"storage\" keyword to silence this warning."
+							);
+					}
 				}
 				else
 				{
@@ -296,23 +309,19 @@ void ReferencesResolver::endVisit(VariableDeclaration const& _variable)
 					if (_variable.isCallableParameter())
 						typeLoc = DataLocation::Memory;
 					else
-					{
 						typeLoc = DataLocation::Storage;
-						if (_variable.isLocalVariable())
-						{
-							if (_variable.sourceUnit().annotation().experimentalFeatures.count(ExperimentalFeature::V050))
-								typeError(
-									_variable.location(),
-									"Storage location must be specified as either \"memory\" or \"storage\"."
-								);
-							else
-								m_errorReporter.warning(
-									_variable.location(),
-									"Variable is declared as a storage pointer. "
-									"Use an explicit \"storage\" keyword to silence this warning."
-								);
-						}
-					}
+
+					if (_variable.sourceUnit().annotation().experimentalFeatures.count(ExperimentalFeature::V050))
+						typeError(
+							_variable.location(),
+							"Storage location must be specified as either \"memory\" or \"storage\"."
+						);
+					else
+						m_errorReporter.warning(
+							_variable.location(),
+							"Variable is declared as a storage pointer. "
+							"Use an explicit \"storage\" keyword to silence this warning."
+						);
 				}
 				else
 					typeLoc = varLoc == Location::Memory ? DataLocation::Memory : DataLocation::Storage;

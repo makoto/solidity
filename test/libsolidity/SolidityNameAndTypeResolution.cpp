@@ -6648,6 +6648,37 @@ BOOST_AUTO_TEST_CASE(warn_unspecified_storage)
 		}
 	)";
 	CHECK_ERROR(text, TypeError, "Storage location must be specified as either \"memory\" or \"storage\".");
+	char const* text = R"(
+		contract C {
+	    struct S { uint a; }
+	    S x;
+	    function f(S storage _s) public pure returns (S) {
+	      return _s;
+	    }
+	  }
+	)";
+	CHECK_SUCCESS_NO_WARNINGS(text);
+	text = R"(
+		contract C {
+	    struct S { uint a; }
+	    S x;
+	    function f(S _s) public pure returns (S) {
+	      return _s;
+	    }
+	  }
+	)";
+	CHECK_WARNING(text, "Variable is declared as a storage pointer. Use an explicit \"storage\" keyword to silence this warning");
+	text = R"(
+		pragma experimental "v0.5.0";
+		contract C {
+	    struct S { uint a; }
+	    S x;
+	    function f(S _s) public pure returns (S) {
+	      return _s;
+	    }
+	  }
+	)";
+	CHECK_ERROR(text, TypeError, "Storage location must be specified as either \"memory\" or \"storage\".");
 }
 
 BOOST_AUTO_TEST_CASE(implicit_conversion_disallowed)
